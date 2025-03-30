@@ -1,0 +1,36 @@
+@BookLibraryManagerApi_HostAddress = http://localhost:5296
+
+GET {{BookLibraryManagerApi_HostAddress}}/api/books/
+Accept: application/json
+
+###
+
+GET {{BookLibraryManagerApi_HostAddress}}/api/books/4db2373f-ac08-446d-9dc1-acc2ef862656
+Accept: application/json
+
+###
+
+POST {{BookLibraryManagerApi_HostAddress}}/api/books/
+Content-Type: application/json
+
+{
+  "title": "Go Crazy",
+  "pageCount": "363",
+  "publishedDate": "2023-10-01T00:00:00Z",
+  "isbn": "978-1-4842-9665-3",
+  "publisherId": "2e5e65a7-3c59-47f1-85b7-9019b101e1d2",
+  "author": {
+    "firstName": "Nicolas",
+    "lastName": "Modrzyk"
+  }
+}
+
+###
+
+POST {{BookLibraryManagerApi_HostAddress}}/api/publishers
+Content-Type: application/json
+
+{
+  "publisherName": "Apress Publishing",
+  "publisherAddress": "1 New York Plaza, New York, NY 10004, USA"
+}
