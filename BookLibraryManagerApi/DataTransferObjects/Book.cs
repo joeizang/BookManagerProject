@@ -15,6 +15,8 @@ public record BookDto(
     string Title,
     string PublishedDate,
     int PageCount,
+    string AuthorName,
+    string PublishingHouse,
     string? BookBlob = null,
     string? BookCoverImage = null
 );

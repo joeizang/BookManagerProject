@@ -15,6 +15,8 @@ public static class BookQueryService
                         b.Title,
                         b.PublishedDate.ToString(),
                         b.NumberOfPages,
+                        b.Authors.Select(ba => $"{ba.FirstName} {ba.LastName},").Concat(),
+                        b.Publisher.PublisherName,
                         b.BookBlob,
                         b.BookCoverImage
                     ))
@@ -52,6 +54,8 @@ public static class BookQueryService
                         b.Title,
                         b.PublishedDate.ToString(),
                         b.NumberOfPages,
+                        b.Authors.Select(ba => $"{ba.FirstName} {ba.LastName},").Concat(),
+                        b.Publisher.PublisherName,
                         b.BookBlob,
                         b.BookCoverImage
                     )).SingleOrDefault()

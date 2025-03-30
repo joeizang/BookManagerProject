@@ -13,6 +13,13 @@ public class Author
         Books = _books.AsReadOnly();
         Publishers = _publishers.AsReadOnly();
     }
+    
+    public Author(Guid authorId)
+    {
+        AuthorId = authorId;
+        Books = _books.AsReadOnly();
+        Publishers = _publishers.AsReadOnly();
+    }
 
     public Author(string firstName, string lastName)
     {
@@ -55,7 +62,7 @@ public class Author
         {
             return;
         }
-        book.AddAuthor(this);
+        // book.AddAuthor(this);
         _books.Add(book);
     }
     
@@ -70,5 +77,9 @@ public class Author
     {
         FirstName = dto.FirstName;
         LastName = dto.LastName;
+        if(dto.Book is not null)
+            _books.Add(new Book(dto.Book.BookId));
+        if(dto.Publisher is not null)
+            _publishers.Add(new Publisher(dto.Publisher.PublisherId));
     }
 }

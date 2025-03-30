@@ -10,13 +10,20 @@ public static class PublisherQueryService
         GetAllPublishers = EF.CompileQuery(
             (BookManagerContext context) =>
                 context.Publishers.AsNoTracking()
-                    .Include(p => p.BooksPublished)
                     .Include(p => p.BookAuthors)
+                    .Include(p => p.BooksPublished)
+                    .ThenInclude(x => x.Authors)
                     .Select(p => new PublisherDto(
                         p.PublisherName,
                         p.PublisherId,
                         p.BooksPublished.Count(),
-                        p.BookAuthors.Count()
+                        p.BookAuthors.Count(),
+                        p.BooksPublished.Select(b => new BookPublishedDto(
+                            b.BookId,
+                            b.Title,
+                            b.Isbn,
+                            $"{b.Authors.SingleOrDefault()!.FirstName} {b.Authors.FirstOrDefault()!.LastName}"
+                        )).ToList()
                     ))
         );
     
@@ -31,7 +38,13 @@ public static class PublisherQueryService
                         p.PublisherName,
                         p.PublisherId,
                         p.BooksPublished.Count(),
-                        p.BookAuthors.Count()
+                        p.BookAuthors.Count(),
+                        p.BooksPublished.Select(b => new BookPublishedDto(
+                            b.BookId,
+                            b.Title,
+                            b.Isbn,
+                            $"{b.Authors.SingleOrDefault()!.FirstName} {b.Authors.FirstOrDefault()!.LastName}"
+                        ))
                     )).SingleOrDefault()
         );
     
@@ -46,7 +59,13 @@ public static class PublisherQueryService
                         p.PublisherName,
                         p.PublisherId,
                         p.BooksPublished.Count(),
-                        p.BookAuthors.Count()
+                        p.BookAuthors.Count(),
+                        p.BooksPublished.Select(b => new BookPublishedDto(
+                            b.BookId,
+                            b.Title,
+                            b.Isbn,
+                            $"{b.Authors.SingleOrDefault()!.FirstName} {b.Authors.FirstOrDefault()!.LastName}"
+                        ))
                     )).SingleOrDefault()
         );
     

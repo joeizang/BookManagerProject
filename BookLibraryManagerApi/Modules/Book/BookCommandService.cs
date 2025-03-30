@@ -22,7 +22,11 @@ public static class BookCommandService
         context.Books.Add(book);
         await context.SaveChangesAsync(cancellationToken);
 
-        return new BookDto( book.BookId, book.Title, bookDto.PublishedDate, book.NumberOfPages);
+        return new BookDto( book.BookId, book.Title, bookDto.PublishedDate, book.NumberOfPages,
+            book.Authors.Select(a => $"{a.FirstName} {a.LastName},").Concat(),
+            book.Publisher.PublisherName,
+            book.BookBlob,
+            book.BookCoverImage);
     }
 
     public static async Task<Option<BookDto>> UpdateBook(
@@ -40,6 +44,30 @@ public static class BookCommandService
         await context.SaveChangesAsync(cancellationToken);
 
         return Option<BookDto>
-            .Some(new BookDto(book.BookId, book.Title, book.PublishedDate.ToString(), book.NumberOfPages));
+            .Some(new BookDto(book.BookId, book.Title, book.PublishedDate.ToString(), book.NumberOfPages,
+                book.Authors.Select(a => $"{a.FirstName} {a.LastName},").Concat(),
+                book.Publisher.PublisherName,
+                book.BookBlob,
+                book.BookCoverImage));
+    }
+    
+    public static async Task<Option<BookDto>> DeleteBook(
+        BookManagerContext context,
+        Guid bookId,
+        CancellationToken cancellationToken)
+    {
+        var book = await context.Books.FindAsync([bookId], cancellationToken);
+
+        if (book is null)
+            return Option<BookDto>.None;
+
+        context.Books.Remove(book);
+        await context.SaveChangesAsync(cancellationToken);
+
+        return Option<BookDto>.Some(new BookDto(bookId, book.Title, book.PublishedDate.ToString(), book.NumberOfPages,
+            book.Authors.Select(a => $"{a.FirstName} {a.LastName},").Concat(),
+            book.Publisher.PublisherName,
+            book.BookBlob,
+            book.BookCoverImage));
     }
 }

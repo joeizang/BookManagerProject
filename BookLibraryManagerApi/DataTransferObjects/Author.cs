@@ -5,13 +5,20 @@ public record AuthorDto(string FullName, Guid AuthorId, int NumberOfBooksAuthore
 
 public record AuthorCreateDto(string FirstName, string LastName);
 
-public record AuthorUpdateDto(string FirstName, string LastName, Guid AuthorId);
+public record AuthorUpdateDto(string FirstName, string LastName, Guid AuthorId, 
+        AuthorBook? Book, AuthorsPublisher? Publisher);
 
 public record AuthorDetailDto(string FirstName, string LastName, Guid AuthorId,
         int NumberOfBooksAuthored, int NumberOfPublishingHousesCollaborated,
-        IEnumerable<AuthorsBooks> BooksAuthored, IEnumerable<AuthorsPublishers> AuthorsPublishers
+        IEnumerable<AuthorsBook> BooksAuthored, IEnumerable<AuthorsPublishers> AuthorsPublishers
         );
 
-public record AuthorsBooks(Guid BookId, string BookTitle, string BookCoverImage);
+public record AuthorsBook(Guid BookId, string BookTitle, string BookCoverImage);
+
+public record AuthorBook(Guid BookId);
+
+public record AuthorsPublisher(Guid PublisherId);
 
 public record AuthorsPublishers(Guid PublisherId, string PublisherName);
+
+public record EmptyAuthor();

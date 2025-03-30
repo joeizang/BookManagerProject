@@ -44,4 +44,20 @@ public static class AuthorCommandService
         return Option<AuthorDto>.Some(new AuthorDto($"{author.FirstName} {author.LastName}", 
             author.AuthorId, author.Books.Count(), author.Publishers.Count()));
     }
+    
+    public static async Task<Option<EmptyAuthor>> DeleteAuthor(
+        BookManagerContext context,
+        Guid authorId,
+        CancellationToken cancellationToken)
+    {
+        var author = await context.Authors.FindAsync(new object[] { authorId }, cancellationToken);
+
+        if (author is null)
+            return Option<EmptyAuthor>.None;
+
+        context.Authors.Remove(author);
+        await context.SaveChangesAsync(cancellationToken);
+
+        return Option<EmptyAuthor>.Some(new EmptyAuthor());
+    }
 }

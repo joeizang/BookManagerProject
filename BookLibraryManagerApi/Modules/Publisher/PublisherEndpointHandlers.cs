@@ -20,11 +20,11 @@ public static class PublisherEndpointHandlers
         return Results.Ok(publisher);
     }
 
-    public static IResult GetPublisherByName([FromServices] BookManagerContext context, string publisherName)
+    public static IResult GetPublisherByName([FromServices] BookManagerContext context, string name)
     {
-        var publisher = PublisherQueryService.GetPublisherByName(context, publisherName);
+        var publisher = PublisherQueryService.GetPublisherByName(context, name);
         if (publisher is null)
-            return Results.NotFound($"Publisher with name {publisherName} not found.");
+            return Results.NotFound($"Publisher with name {name} not found.");
         return Results.Ok(publisher);
     }
 
@@ -54,9 +54,28 @@ public static class PublisherEndpointHandlers
             None: () => Results.NotFound($"Publisher with id {dto.PublisherId} not found.")
         );
     }
-
-    public static Task DeletePublisher(HttpContext context)
+    
+    public static async Task<IResult> UpdatePublisherAuthorRoster([FromServices] BookManagerContext context,
+         [FromBody] PublisherAuthorRosterUpdate author, CancellationToken token)
     {
-        throw new NotImplementedException();
+        var result = await PublisherCommandService
+            .UpdatePublisherAuthorRoster(context, author, token).ConfigureAwait(false);
+        
+        return result.Match(
+            Some: publisher => Results.NoContent(),
+            None: () => Results.NotFound($"Publisher with id {author.PublisherId} not found.")
+        );
+    }
+    
+    public static async Task<IResult> DeletePublisher([FromServices] BookManagerContext context,
+        Guid id, CancellationToken token)
+    {
+        var result = await PublisherCommandService
+            .DeletePublisher(context, id, token).ConfigureAwait(false);
+        
+        return result.Match(
+            Some: _ => Results.NoContent(),
+            None: () => Results.NotFound($"Publisher with id {id} not found.")
+        );
     }
 }

@@ -51,4 +51,16 @@ public static class BookEndpointHandlers
             None: () => Results.NotFound($"Book with id {dto.BookId} not found.")
         );
     }
+    
+    public static async Task<IResult> DeleteBook([FromServices] BookManagerContext context,
+        Guid id, CancellationToken token)
+    {
+        var result = await BookCommandService
+            .DeleteBook(context, id, token).ConfigureAwait(false);
+        
+        return result.Match(
+            Some: book => Results.Ok(book),
+            None: () => Results.NotFound($"Book with id {id} not found.")
+        );
+    }
 }

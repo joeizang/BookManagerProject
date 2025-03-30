@@ -17,6 +17,13 @@ public class Book
         Authors = _authors.AsReadOnly();
         Ratings = _ratings.AsReadOnly();
     }
+
+    public Book(Guid bookId, string? title = "")
+    {
+        BookId = bookId;
+        if(!string.IsNullOrEmpty(title))
+            Console.WriteLine("its a dud!");
+    }
     
     public Book(string title, int numberOfPages, Instant publishedDate, Guid publisherId, string isbn)
     {

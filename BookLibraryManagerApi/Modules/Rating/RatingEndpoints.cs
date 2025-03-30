@@ -20,7 +20,7 @@ public static class RatingEndpoints
             .Produces<RatingDto>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest);
 
-        group.MapPut("/", RatingEndpointHandlers.UpdateRating)
+        group.MapPut("/{id:guid}", RatingEndpointHandlers.UpdateRating)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound);
 

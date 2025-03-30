@@ -33,7 +33,7 @@ public static class AuthorQueryService
                         a.AuthorId,
                         a.Books.Count(),
                         a.Publishers.Count(),
-                        a.Books.Select(b => new AuthorsBooks(b.BookId, b.Title, b.BookCoverImage)),
+                        a.Books.Select(b => new AuthorsBook(b.BookId, b.Title, b.BookCoverImage)),
                         a.Publishers.Select(p => new AuthorsPublishers(p.PublisherId, p.PublisherName))
                     )).SingleOrDefault()
         );

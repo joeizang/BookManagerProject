@@ -48,4 +48,14 @@ public static class AuthorEndpointHandlers
         return author.Match(_ => Results.NoContent(),
             () => Results.NotFound($"Author with id {authorDto.AuthorId} not found."));
     }
+    
+    public static async Task<IResult> DeleteAuthor(
+        BookManagerContext context,
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        var author = await AuthorCommandService.DeleteAuthor(context, id, cancellationToken);
+        return author.Match(_ => Results.NoContent(),
+            () => Results.NotFound($"Author with id {id} not found."));
+    }
 }

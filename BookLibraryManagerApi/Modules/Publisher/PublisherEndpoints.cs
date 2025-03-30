@@ -7,14 +7,14 @@ public static class PublisherEndpoints
     public static RouteGroupBuilder MapPublisherEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var publisherGroup = endpoints.MapGroup("api/publishers");
-        var publisherGroupWithIds = publisherGroup.MapGroup("api/publishers/{id}"); //endpoints.MapGroup("api/publisher/{id}");
+        var publisherGroupWithIds = publisherGroup.MapGroup("/{id:guid}");
         
         publisherGroup.MapGet("", PublisherEndpointHandlers.GetAllPublishers)
             .WithName("GetAllPublishers")
             .Produces<List<PublisherDto>>()
             .Produces(StatusCodes.Status500InternalServerError);
         
-        publisherGroup.MapGet("/{id}", PublisherEndpointHandlers.GetPublisherById)
+        publisherGroupWithIds.MapGet("", PublisherEndpointHandlers.GetPublisherById)
             .WithName("GetPublisherById")
             .Produces<PublisherDto>()
             .Produces(StatusCodes.Status404NotFound)
@@ -28,24 +28,32 @@ public static class PublisherEndpoints
         
         publisherGroup.MapPost("", PublisherEndpointHandlers.CreatePublisher)
             .WithName("CreatePublisher")
-            .Accepts<PublisherDto>("application/json")
-            .Produces<PublisherDto>(StatusCodes.Status201Created)
+            .Accepts<PublisherCreateDto>("application/json")
+            .Produces<PublisherCreatedDto>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError);
         
         publisherGroupWithIds.MapPut("", PublisherEndpointHandlers.UpdatePublisher)
             .WithName("UpdatePublisher")
-            .Accepts<PublisherDto>("application/json")
+            .Accepts<PublisherCreateDto>("application/json")
             .Produces<PublisherDto>()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status500InternalServerError);
         
-        // publisherGroupWithIds.MapDelete("", PublisherEndpointHandlers.DeletePublisher)
-        //     .WithName("DeletePublisher")
-        //     .Produces(StatusCodes.Status204NoContent)
-        //     .Produces(StatusCodes.Status404NotFound)
-        //     .Produces(StatusCodes.Status500InternalServerError);
+        publisherGroupWithIds.MapPut("/authors", PublisherEndpointHandlers.UpdatePublisherAuthorRoster)
+            .WithName("UpdatePublisherAuthorRoster")
+            .Accepts<PublisherAuthorRosterUpdate>("application/json")
+            .Produces<PublisherCreatedDto>()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status500InternalServerError);
+        
+        publisherGroupWithIds.MapDelete("", PublisherEndpointHandlers.DeletePublisher)
+            .WithName("DeletePublisher")
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status500InternalServerError);
         
         
 

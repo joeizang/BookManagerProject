@@ -5,7 +5,7 @@ Accept: application/json
 
 ###
 
-GET {{BookLibraryManagerApi_HostAddress}}/api/books/4db2373f-ac08-446d-9dc1-acc2ef862656
+GET {{BookLibraryManagerApi_HostAddress}}/api/books/a4eba2af-f788-4505-8b6e-e1fb7589b296
 Accept: application/json
 
 ###
@@ -14,11 +14,29 @@ POST {{BookLibraryManagerApi_HostAddress}}/api/books/
 Content-Type: application/json
 
 {
+  "title": "Building With Ethereum",
+  "pageCount": "261",
+  "publishedDate": "2023-01-10T00:00:00Z",
+  "isbn": "978-1-4842-9044-6",
+  "publisherId": "2e5e65a7-3c59-47f1-85b7-9019b101e1d2",
+  "author": {
+    "firstName": "Jamie",
+    "lastName": "Rumbelow"
+  }
+}
+
+###
+
+PUT {{BookLibraryManagerApi_HostAddress}}/api/books/4db2373f-ac08-446d-9dc1-acc2ef862656
+Content-Type: application/json
+
+{
   "title": "Go Crazy",
   "pageCount": "363",
   "publishedDate": "2023-10-01T00:00:00Z",
   "isbn": "978-1-4842-9665-3",
   "publisherId": "2e5e65a7-3c59-47f1-85b7-9019b101e1d2",
+  "bookId": "4db2373f-ac08-446d-9dc1-acc2ef862656",
   "author": {
     "firstName": "Nicolas",
     "lastName": "Modrzyk"
@@ -27,6 +45,12 @@ Content-Type: application/json
 
 ###
 
+DELETE {{BookLibraryManagerApi_HostAddress}}/api/books/35bf2272-d3c1-4df5-84da-c998611cf663
+
+###
+
+# PUBLISHERS REQUESTS
+
 POST {{BookLibraryManagerApi_HostAddress}}/api/publishers
 Content-Type: application/json
 
@@ -34,3 +58,78 @@ Content-Type: application/json
   "publisherName": "Apress Publishing",
   "publisherAddress": "1 New York Plaza, New York, NY 10004, USA"
 }
+
+###
+
+GET {{BookLibraryManagerApi_HostAddress}}/api/publishers
+Accept: application/json
+
+###
+
+PUT {{BookLibraryManagerApi_HostAddress}}/api/publishers/2e5e65a7-3c59-47f1-85b7-9019b101e1d2
+Content-Type: application/json
+
+{
+  "publisherName": "Apress Publishing (Springer Inc)",
+  "publisherAddress": "1 New York Plaza, New York, NY 10004, USA",
+  "publisherId": "2e5e65a7-3c59-47f1-85b7-9019b101e1d2"
+}
+
+###
+
+PUT {{BookLibraryManagerApi_HostAddress}}/api/publishers/2e5e65a7-3c59-47f1-85b7-9019b101e1d2/authors
+Content-Type: application/json
+
+{
+  "authorId": "0195e71b-16a4-77b4-90b0-b8bf7f49eb8f",
+  "publisherId": "2e5e65a7-3c59-47f1-85b7-9019b101e1d2"
+}
+
+###
+
+DELETE {{BookLibraryManagerApi_HostAddress}}/api/publishers/8e00c9c3-de05-4cf3-8776-768b707d2de1
+
+###
+
+# AUTHORS REQUESTS
+
+GET {{BookLibraryManagerApi_HostAddress}}/api/authors
+Accept: application/json
+
+###
+
+GET {{BookLibraryManagerApi_HostAddress}}/api/authors/0195e69e-2fda-70c6-8692-21964b5fa7c6
+Accept: application/json
+
+###
+
+POST {{BookLibraryManagerApi_HostAddress}}/api/authors/
+Content-Type: application/json
+
+{
+  "firstName": "Jamie",
+  "lastName": "Rumbelow"
+}
+
+###
+
+PUT {{BookLibraryManagerApi_HostAddress}}/api/authors/0195e69e-2fda-70c6-8692-21964b5fa7c6
+Content-Type: application/json
+
+{
+  "firstName": "Jamie",
+  "lastName": "Rumbelow",
+  "authorId": "0195e69e-2fda-70c6-8692-21964b5fa7c6",
+  "book": {
+    "bookId": "35bf2272-d3c1-4df5-84da-c998611cf663"
+  },
+  "publisher": {
+    "publisherId": "2e5e65a7-3c59-47f1-85b7-9019b101e1d2"
+  }
+}
+
+###
+
+DELETE {{BookLibraryManagerApi_HostAddress}}/api/authors/0195e736-985f-7d0d-9b77-dc9224b891af
+
+###
