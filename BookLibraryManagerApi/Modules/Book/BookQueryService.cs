@@ -22,8 +22,8 @@ public static class BookQueryService
                     ))
         );
 
-    public static readonly Func<BookManagerContext, Guid, BookDetails?> 
-        GetBookById = EF.CompileQuery(
+    public static readonly Func<BookManagerContext, Guid, Task<BookDetails?>> 
+        GetBookById = EF.CompileAsyncQuery(
             (BookManagerContext context, Guid id) =>
                 context.Books.AsNoTracking()
                     .Include(b => b.Authors)
@@ -42,8 +42,8 @@ public static class BookQueryService
                     )).SingleOrDefault()
         );
 
-    public static readonly Func<BookManagerContext, string, BookDto?>
-        GetBookByTitle = EF.CompileQuery(
+    public static readonly Func<BookManagerContext, string, Task<BookDto?>>
+        GetBookByTitle = EF.CompileAsyncQuery(
             (BookManagerContext context, string title) =>
                 context.Books.AsNoTracking()
                     .Include(b => b.Authors)

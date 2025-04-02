@@ -14,6 +14,8 @@ builder.Services.AddDbContextPool<BookManagerContext>(opt =>
     opt.EnableSensitiveDataLogging();
 });
 
+builder.Services.AddCors();
+
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -25,6 +27,13 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseCors(opt =>
+{
+    opt.AllowAnyOrigin();
+    opt.AllowAnyHeader();
+    opt.AllowAnyMethod();
+});
 
 app.UseHttpsRedirection();
 app.MapPublisherEndpoints();

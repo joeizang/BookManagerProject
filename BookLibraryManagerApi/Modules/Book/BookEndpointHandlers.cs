@@ -12,16 +12,16 @@ public static class BookEndpointHandlers
         return Results.Ok(books);
     }
 
-    public static IResult GetBookById([FromServices] BookManagerContext context,
+    public static async Task<IResult> GetBookById([FromServices] BookManagerContext context,
         Guid id)
     {
-        var book = BookQueryService.GetBookById(context, id);
+        var book = await BookQueryService.GetBookById(context, id).ConfigureAwait(false);
         return book is not null ? Results.Ok(book) : Results.NotFound();
     }
 
-    public static IResult GetBookByTitle([FromServices] BookManagerContext context, string title)
+    public static async Task<IResult> GetBookByTitle([FromServices] BookManagerContext context, string title)
     {
-        var book = BookQueryService.GetBookByTitle(context, title);
+        var book = await BookQueryService.GetBookByTitle(context, title).ConfigureAwait(false);
         return book is not null ? Results.Ok(book) : Results.NotFound();
     }
     
